@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chip Downloader</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Chip Downloader</h1>
+    <form>
+        <label for="project">Select a project:</label>
+        <select id="project" name="project">
+            {% for project in projects %}
+                <option value="{{ project }}">{{ project }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label for="chip">Select a chip:</label>
+        <select id="chip" name="chip">
+            {% for chip in chips %}
+                <option value="{{ chip }}">{{ chip }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <button type="button" onclick="downloadChip()">Download Chip</button>
+    </form>
+    <div id="warnings"></div>
+    <div id="status"></div>
+
+    <script>
+        function downloadChip() {
+            var chip = document.getElementById("chip").value;
+            var pro = document.getElementById("project").value;
+            $.post("/download?chip="+chip+"&pro="+pro, function(data, status){
+                document.getElementById("warnings").innerHTML = data.warnings;
+                document.getElementById("status").innerHTML = data.hStatus;
+            });
+        }
+    </script>
+</body>
+</html>
